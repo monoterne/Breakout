@@ -1,6 +1,4 @@
 .DS_Store
-.vscode/
+.temp.c
 main
-.clang-format
-compile_flags.txt
 *.dSYM

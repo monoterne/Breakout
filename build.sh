@@ -1,3 +1,6 @@
-gcc-15 -std=c99 -g -Wall -Wextra -Wconversion -Wno-unused-result -Wdangling-pointer=1 -Werror=uninitialized -Werror=vla -Werror=return-type $(pkg-config --cflags --libs sdl3) main.c -o main
+
+set -xe
+
+gcc -Wall -Wno-unused-result -Wconversion -Wno-sign-conversion -Werror=vla -Werror=uninitialized -Werror=vla -Werror=return-type -Wextra -o main -g -std=c99 main.c `sdl2-config --cflags --libs`
 
 ./main
