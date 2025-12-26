@@ -63,6 +63,9 @@ int main(int agrc, char* argv[])
     ball.w = BALL_SIZE;
     ball.h = BALL_SIZE;
 
+    int ball_move_x = BALL_SPEED; // ->
+    int ball_move_y = -BALL_SPEED; // ^
+
     SDL_Rect brick[BRICK_TOTAL];
     int brick_x = (SCREEN_WIDTH - BRICK_GRID)/2;
     int brick_y = space_y;
@@ -88,6 +91,7 @@ int main(int agrc, char* argv[])
         brick_y += (BRICK_HEIGHT + BRICK_SPACE);
     }
 
+    // -- event game loop
     while (running == 1)
     {
         while (SDL_PollEvent(&event))
@@ -104,17 +108,57 @@ int main(int agrc, char* argv[])
             platform.x = platform.x - PLATFORM_SPEED;
             //printf("pressed A or LEFT\n");
         }
+
         if (key_state[SDL_SCANCODE_D] || key_state[SDL_SCANCODE_RIGHT]) {
             platform.x = platform.x + PLATFORM_SPEED;
             //printf("pressed D or RIGHT\n");
         }
+
         if (platform.x < 0) {
             platform.x = 0;
         }
+
         if (platform.x > SCREEN_WIDTH - PLATFORM_WIDTH) {
             platform.x = SCREEN_WIDTH - PLATFORM_WIDTH;
         }
 
+        ball.x += ball_move_x;
+        ball.y += ball_move_y;
+
+        if (ball.x <= 0) {
+            ball.x = 0;
+            ball_move_x = -ball_move_x; // change direction
+        }
+
+        if (ball.y <= 0) {
+            ball.y = 0;
+            ball_move_y = -ball_move_y;
+        }
+
+        if (ball.x >= SCREEN_WIDTH - BALL_SIZE) {
+            ball.x = SCREEN_WIDTH - BALL_SIZE;
+            ball_move_x = -ball_move_x;
+        }
+
+        if (ball.y >= SCREEN_HEIGHT - BALL_SIZE) {
+            ball.y = SCREEN_HEIGHT - BALL_SIZE;
+            ball_move_y = -ball_move_y;
+        }
+
+        if (SDL_HasIntersection(&ball, &platform)) {
+            ball_move_y = -ball_move_y; // flip to not stuck on platform
+            ball.y = platform.y - BALL_SIZE;
+        }
+
+        for (int i = 0; i < BRICK_TOTAL; ++i) {
+            if (brick[i].x > -1) {
+                if (SDL_HasIntersection(&ball, &brick[i])) {
+                    brick[i].x = -1000; // -1000 so it can't be seen, like destroyed
+                    ball_move_y = -ball_move_y;
+                    break; // to not hit several bricks in one run
+                }
+            }
+        }
         // background
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Nastavení barvy na černou
         SDL_RenderClear(renderer);                      // Vykreslení pozadí
@@ -128,18 +172,22 @@ int main(int agrc, char* argv[])
         // ball
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderFillRect(renderer, &ball);
+        //
 
         // bricks
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
         for (int i = 0; i < BRICK_TOTAL; ++i) {
-            SDL_RenderFillRect(renderer, &brick[i]);
+            if (brick[i].x > -1) {
+                SDL_RenderFillRect(renderer, &brick[i]);
+            }
         }
+        //
 
-        // --
+        //
         SDL_RenderPresent(renderer);  // Prezentace kreslítka
+        // --
     }
 
-    // --
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
