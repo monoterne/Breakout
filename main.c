@@ -142,7 +142,7 @@ int main(int agrc, char* argv[])
 
         if (ball.y >= SCREEN_HEIGHT - BALL_SIZE) {
             ball.y = SCREEN_HEIGHT - BALL_SIZE;
-            ball_move_y = -ball_move_y;
+            // TODO: add reset here
         }
 
         if (SDL_HasIntersection(&ball, &platform)) {
@@ -153,12 +153,13 @@ int main(int agrc, char* argv[])
         for (int i = 0; i < BRICK_TOTAL; ++i) {
             if (brick[i].x > -1) {
                 if (SDL_HasIntersection(&ball, &brick[i])) {
-                    brick[i].x = -1000; // -1000 so it can't be seen, like destroyed
+                    brick[i].x = SCREEN_WIDTH * 2; // move to the end of the screen, so it can't be seen, like destroyed
                     ball_move_y = -ball_move_y;
                     break; // to not hit several bricks in one run
                 }
             }
         }
+
         // background
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Nastavení barvy na černou
         SDL_RenderClear(renderer);                      // Vykreslení pozadí
