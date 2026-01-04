@@ -22,7 +22,8 @@ int main() {
     }
 
     SDL_Renderer* renderer = SDL_CreateRenderer(
-        window, -1,
+        window,
+        -1,
         SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
     );
 
@@ -62,6 +63,11 @@ int main() {
                     if (key == SDLK_SPACE || key == SDLK_RETURN) {
                         reset();
                         game_state = PLAY;
+                    }
+                }
+                if (game_state == LOSE) {
+                    if (key == SDLK_SPACE || key == SDLK_RETURN) {
+                        game_state = MENU;
                     }
                 }
             }
