@@ -278,7 +278,7 @@ int main() {
         SDL_RenderPresent(renderer);  // Prezentace kreslítka
 
         // could try to do delta etc. (look skripta)
-        SDL_Delay(1000/60); // 60 fps
+        //SDL_Delay(1000/60); // 60 fps
     }
 
     if (font_big) {
