@@ -23,6 +23,7 @@
 #define LEVELS 3
 
 #define SPACE_Y 40 // space from corner of screen
+
 SDL_Rect platform = {
     (SCREEN_WIDTH - PLATFORM_WIDTH) / 2,
     (SCREEN_HEIGHT - PLATFORM_HEIGHT - SPACE_Y),
@@ -125,16 +126,15 @@ void load_level(const char* file_name) {
         return;
     }
 
-    printf("Load %s\n", file_name);
-    for (int r = 0; r < BRICK_COLS; r++) {
+    printf("Loaded: %s\n", file_name);
+    for (int r = 0; r < BRICK_ROWS; r++) {
         for (int c = 0; c < BRICK_COLS; c++) {
-            char ch = 0;
-            while (ch == '\n' || ch == '\r') {
+            int ch = fgetc(file);
+            while (ch == '\n' || ch == '\r' || ch == ' ') {
                 ch = fgetc(file);
             }
 
-            if (ch == EOF)
-            {
+            if (ch == EOF) {
                 break;
             }
 

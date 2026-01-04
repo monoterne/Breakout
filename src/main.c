@@ -166,10 +166,10 @@ int main() {
                 SDL_SetRenderDrawColor(renderer, level_colors[i].r, level_colors[i].g, level_colors[i].b, 255);
                 SDL_RenderFillRect(renderer, &btn);
 
-                char str[2];
-                sprintf(str, "Level %d", i + 1);
+                char lvl[20];
+                sprintf(lvl, "Level %d", i + 1);
                 SDL_Color white = {255, 255, 255, 255};
-                render_text(renderer, btn.x + btn_size/2, btn.y + btn_size/2, str, white, 1);
+                render_text(renderer, btn.x + btn_size/2, btn.y + btn_size/2, lvl, white, 1);
             }
         }
 
