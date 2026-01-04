@@ -263,6 +263,18 @@ int main() {
             render_text(renderer, font_small, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 60, "Press SPACE to go to menu", light_green, 1);
         }
 
+        if (game_state == WIN) {
+            SDL_SetRenderDrawColor(renderer, dark_green.r, dark_green.g, dark_green.b, 255);
+            SDL_RenderClear(renderer);
+
+            render_text(renderer, font_big, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 60, "You Won!", beige, 1);
+
+            sprintf(score_numbers, "Score: %d", score);
+            render_text(renderer, font_big, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, score_numbers, white, 1);
+
+            render_text(renderer, font_small, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 60, "Press SPACE to go to menu", light_green, 1);
+        }
+
         SDL_RenderPresent(renderer);  // Prezentace kreslítka
 
         // could try to do delta etc. (look skripta)
