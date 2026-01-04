@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 #include <stdio.h>
 
 #define SCREEN_WIDTH  800
@@ -12,7 +13,7 @@
 #define PLATFORM_SPEED 12
 
 #define BALL_SIZE 24
-#define BALL_SPEED 8
+#define BALL_SPEED 6
 
 #define BRICK_WIDTH 70
 #define BRICK_HEIGHT 20

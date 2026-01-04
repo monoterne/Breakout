@@ -16,6 +16,21 @@ int main() {
         return 1;
     }
 
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        fprintf(stderr, "SDL_mixer Error: %s\n", Mix_GetError());
+        return 1;
+    }
+
+    Mix_Chunk* sound_select = Mix_LoadWAV("SELECT.wav");
+    Mix_Chunk* sound_destroy = Mix_LoadWAV("DESTROY.wav");
+    Mix_Chunk* sound_win = Mix_LoadWAV("WIN.wav");
+    Mix_Chunk* sound_lose = Mix_LoadWAV("LOSE.wav");
+    Mix_Music* sound_menu = Mix_LoadMUS("MENU.mp3");
+
+    if (!sound_select || !sound_destroy || !sound_win || !sound_lose || !sound_menu) {
+        fprintf(stderr, "Audio Load Error: %s\n", Mix_GetError());
+    }
+
     TTF_Font* font_big = TTF_OpenFont("PrStart.ttf", 32);
     TTF_Font* font_small = TTF_OpenFont("PrStart.ttf", 16);
     if (!font_big) {
@@ -69,6 +84,8 @@ int main() {
                 SDL_Keycode key = event.key.keysym.sym;
 
                 if (game_state == MENU) {
+                    Mix_PlayChannel(-1, sound_select, 0);
+
                     if (key == SDLK_LEFT || key == SDLK_a) {
                         choosed_level--;
                         if (choosed_level < 0) {
@@ -82,11 +99,13 @@ int main() {
                         }
                     }
                     if (key == SDLK_SPACE || key == SDLK_RETURN) {
+                        Mix_PlayChannel(-1, sound_select, 0);
                         reset();
                         game_state = PLAY;
                     }
                 }
                 if (game_state == LOSE || game_state == WIN) {
+                    Mix_PlayMusic(sound_menu, -1); // start music again
                     if (key == SDLK_SPACE || key == SDLK_RETURN) {
                         game_state = MENU;
                     }
@@ -97,6 +116,7 @@ int main() {
         const Uint8* key_state = SDL_GetKeyboardState(NULL);
 
         if (game_state == PLAY) {
+            Mix_HaltMusic();
             if (key_state[SDL_SCANCODE_A] || key_state[SDL_SCANCODE_LEFT]) {
                 platform.x -= PLATFORM_SPEED;
             }
@@ -128,7 +148,8 @@ int main() {
                 score -= 50;          
                 if (score < 0) {
                     score = 0;
-                } // no negative points
+                }
+                Mix_PlayChannel(-1, sound_lose, 0);
                 game_state = LOSE;
             }
 
@@ -142,6 +163,7 @@ int main() {
                 if (brick[i].w > 0) {
                     brick_active++;
                     if (SDL_HasIntersection(&ball, &brick[i])) {
+                        Mix_PlayChannel(-1, sound_destroy, 0);
                         brick[i].w = 0; // destroy brick by setting width to 0
                         ball_move_y = -ball_move_y;
                         score += 5;
@@ -152,6 +174,7 @@ int main() {
             }
 
             if (brick_active == 0) {
+                Mix_PlayChannel(-1, sound_win, 0);
                 game_state = WIN;
             }
         }
@@ -257,8 +280,16 @@ int main() {
         SDL_DestroyTexture(ball_texture);
     }
 
+    Mix_FreeChunk(sound_select);
+    Mix_FreeChunk(sound_destroy);
+    Mix_FreeChunk(sound_win);
+    Mix_FreeChunk(sound_lose);
+    Mix_FreeMusic(sound_menu);
+
     TTF_Quit();
-    IMG_Quit(); 
+    IMG_Quit();
+    Mix_CloseAudio(); 
+    Mix_Quit();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
