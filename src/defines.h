@@ -20,7 +20,7 @@
 #define BRICK_SPACE 10
 #define BRICK_ROWS 4
 #define BRICK_COLS 9
-#define BRICK_TOTAL 100 // do smth with bricks
+#define BRICK_TOTAL 100
 
 #define LEVELS 3
 
@@ -33,8 +33,6 @@ SDL_Color white = {255, 255, 255, 255};
 SDL_Color light_green = {138, 220, 143, 255};
 SDL_Color dark_green = {17, 44, 44, 255};
 SDL_Color beige = {199, 177, 143, 255};
-
-
 
 SDL_Rect platform = {
     (SCREEN_WIDTH - PLATFORM_WIDTH) / 2,
@@ -67,7 +65,7 @@ typedef enum {
 
 State game_state = MENU; // maybe find some way to do it using SDL, CreatePopupWindow or smth
 
-int choosed_level = 0;  
+int choosed_level = 0;
 const char* level_file[LEVELS] = {
     "level1.txt",
     "level2.txt",
@@ -80,19 +78,19 @@ void render_text(SDL_Renderer* renderer, TTF_Font* font, int x, int y, const cha
     }
 
     SDL_Surface* surface = TTF_RenderText_Blended(
-        font,
-        text,
-        color
-    );
+                               font,
+                               text,
+                               color
+                           );
     if (!surface) {
         printf("Text Render Error: %s\n", TTF_GetError());
         return;
     }
 
     SDL_Texture* texture = SDL_CreateTextureFromSurface(
-        renderer,
-        surface
-    );
+                               renderer,
+                               surface
+                           );
 
     SDL_Rect text_rect = {
         x,
@@ -125,9 +123,9 @@ void load_level(const char* file_name) {
             int c = i % BRICK_COLS;
             brick[brick_count++] = (SDL_Rect) {
                 space_x + c*(BRICK_WIDTH + BRICK_SPACE),
-                SPACE_Y + r*(BRICK_HEIGHT + BRICK_SPACE),
-                BRICK_WIDTH,
-                BRICK_HEIGHT
+                        SPACE_Y + r*(BRICK_HEIGHT + BRICK_SPACE),
+                        BRICK_WIDTH,
+                        BRICK_HEIGHT
             };
         }
         return;
@@ -148,13 +146,14 @@ void load_level(const char* file_name) {
             if (ch == '1') {
                 if (brick_count < BRICK_TOTAL) {
                     brick[brick_count++] = (SDL_Rect) {
-                    space_x + c*(BRICK_WIDTH + BRICK_SPACE),
-                    SPACE_Y + r*(BRICK_HEIGHT + BRICK_SPACE),
-                    BRICK_WIDTH, BRICK_HEIGHT};
+                        space_x + c*(BRICK_WIDTH + BRICK_SPACE),
+                                SPACE_Y + r*(BRICK_HEIGHT + BRICK_SPACE),
+                                BRICK_WIDTH, BRICK_HEIGHT
+                    };
                 }
             }
         }
-    }   
+    }
     fclose(file);
 }
 

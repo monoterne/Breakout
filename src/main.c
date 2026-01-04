@@ -39,15 +39,15 @@ int main() {
     if (!font_small) {
         fprintf(stderr, "TTF_OpenFont Error: %s\n", TTF_GetError());
     }
-    
+
     SDL_Window* window = SDL_CreateWindow(
-        "Breakout /w SDL2",
-        SDL_WINDOWPOS_CENTERED,
-        SDL_WINDOWPOS_CENTERED,
-        SCREEN_WIDTH,
-        SCREEN_HEIGHT,
-        SDL_WINDOW_SHOWN
-    );
+                             "Breakout /w SDL2",
+                             SDL_WINDOWPOS_CENTERED,
+                             SDL_WINDOWPOS_CENTERED,
+                             SCREEN_WIDTH,
+                             SCREEN_HEIGHT,
+                             SDL_WINDOW_SHOWN
+                         );
 
     if (!window) {
         fprintf(stderr, "SDL_CreateWindow Error: %s\n", SDL_GetError());
@@ -56,10 +56,10 @@ int main() {
     }
 
     SDL_Renderer* renderer = SDL_CreateRenderer(
-        window,
-        -1,
-        SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
-    );
+                                 window,
+                                 -1,
+                                 SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
+                             );
 
     if (!renderer) {
         SDL_DestroyWindow(window);
@@ -145,7 +145,7 @@ int main() {
             }
 
             if (ball.y >= SCREEN_HEIGHT) {
-                score -= 50;          
+                score -= 50;
                 if (score < 0) {
                     score = 0;
                 }
@@ -186,7 +186,7 @@ int main() {
         if (game_state == MENU) {
             SDL_SetRenderDrawColor(renderer, dark_green.r, dark_green.g, dark_green.b, 255);
             SDL_RenderClear(renderer);
-            
+
             int btn_size = 120;
             int btn_w = (btn_size * LEVELS) + (SPACE_Y * (LEVELS - 1));
             int btn_x = (SCREEN_WIDTH - btn_w) / 2;
@@ -201,7 +201,7 @@ int main() {
                     btn_size,
                     btn_size
                 };
-                
+
                 if (i == choosed_level) {
                     SDL_SetRenderDrawColor(renderer, 138, 220, 143, 255);
                     SDL_Rect border = {
@@ -214,7 +214,7 @@ int main() {
                 }
                 SDL_SetRenderDrawColor(renderer, 15, 25, 25, 255);
                 SDL_RenderFillRect(renderer, &btn);
-                
+
                 render_text(renderer, font_big, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 140, "Controls", beige, 1);
                 render_text(renderer, font_small, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 180, "A/D or </> for go left & right", white, 1);
                 render_text(renderer, font_small, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 220, "ENTER to choose the level", white, 1);
@@ -229,14 +229,13 @@ int main() {
         if (game_state == PLAY) {
             SDL_SetRenderDrawColor(renderer, dark_green.r, dark_green.g, dark_green.b, 255);
             SDL_RenderClear(renderer);
-            
+
             SDL_SetRenderDrawColor(renderer, light_green.r, light_green.g, light_green.b, 255);
             SDL_RenderFillRect(renderer, &platform);
 
             if (ball_texture) {
                 SDL_RenderCopy(renderer, ball_texture, NULL, &ball);
-            } 
-            else {
+            } else {
                 SDL_SetRenderDrawColor(renderer, white.r, white.g, white.b, 255);
                 SDL_RenderFillRect(renderer, &ball);
             }
@@ -249,7 +248,7 @@ int main() {
             }
             sprintf(score_numbers, "%d", score);
             render_text(renderer, font_small, SCREEN_WIDTH - 100, 20, score_numbers, white, 1);
-            
+
         }
 
         if (game_state == LOSE) {
@@ -288,7 +287,7 @@ int main() {
 
     TTF_Quit();
     IMG_Quit();
-    Mix_CloseAudio(); 
+    Mix_CloseAudio();
     Mix_Quit();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
