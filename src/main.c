@@ -25,7 +25,7 @@ int main() {
     Mix_Chunk* sound_destroy = Mix_LoadWAV("DESTROY.wav");
     Mix_Chunk* sound_win = Mix_LoadWAV("WIN.wav");
     Mix_Chunk* sound_lose = Mix_LoadWAV("LOSE.wav");
-    Mix_Music* sound_menu = Mix_LoadMUS("MENU.mp3");
+    Mix_Music* sound_menu = Mix_LoadMUS("MENU.wav");
 
     if (!sound_select || !sound_destroy || !sound_win || !sound_lose || !sound_menu) {
         fprintf(stderr, "Audio Load Error: %s\n", Mix_GetError());
