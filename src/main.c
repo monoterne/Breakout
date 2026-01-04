@@ -71,6 +71,7 @@ int main() {
     SDL_Texture* ball_texture = IMG_LoadTexture(renderer, "ball.png");
 
     SDL_Event event;
+    Mix_PlayMusic(sound_menu, -1);
 
     // game loop
     int running = 1;
