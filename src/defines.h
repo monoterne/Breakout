@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
 #include <stdio.h>
 
 #define SCREEN_WIDTH  800
@@ -10,19 +11,29 @@
 #define PLATFORM_MOVE_STEP 4
 #define PLATFORM_SPEED 12
 
-#define BALL_SIZE 8
-#define BALL_SPEED 4
+#define BALL_SIZE 24
+#define BALL_SPEED 8
 
 #define BRICK_WIDTH 70
 #define BRICK_HEIGHT 20
 #define BRICK_SPACE 10
-#define BRICK_ROWS 6
-#define BRICK_COLS 4
+#define BRICK_ROWS 4
+#define BRICK_COLS 9
 #define BRICK_TOTAL 100 // do smth with bricks
 
 #define LEVELS 3
 
 #define SPACE_Y 40 // space from corner of screen
+
+int score = 0;
+char score_numbers[200];
+
+SDL_Color white = {255, 255, 255, 255};
+SDL_Color light_green = {138, 220, 143, 255};
+SDL_Color dark_green = {17, 44, 44, 255};
+SDL_Color beige = {199, 177, 143, 255};
+
+
 
 SDL_Rect platform = {
     (SCREEN_WIDTH - PLATFORM_WIDTH) / 2,
@@ -49,25 +60,20 @@ TTF_Font* font = NULL;
 typedef enum {
     MENU,
     PLAY,
-    LOSE
+    LOSE,
+    WIN,
 } State;
 
 State game_state = MENU; // maybe find some way to do it using SDL, CreatePopupWindow or smth
 
-int choosed_level = 0;
+int choosed_level = 0;  
 const char* level_file[LEVELS] = {
     "level1.txt",
     "level2.txt",
     "level3.txt"
 };
 
-SDL_Color level_colors[LEVELS] = {
-    {0, 255, 0, 255},   // lvl 1
-    {255, 255, 0, 255}, // lvl 2
-    {0, 255, 255, 255}  // lvel 3
-};
-
-void render_text(SDL_Renderer* renderer, int x, int y, const char* text, SDL_Color color, int center) {
+void render_text(SDL_Renderer* renderer, TTF_Font* font, int x, int y, const char* text, SDL_Color color, int center) {
     if (!font) {
         return;
     }
@@ -147,17 +153,17 @@ void load_level(const char* file_name) {
                 }
             }
         }
-    }
+    }   
     fclose(file);
 }
 
 void reset() {
+    score = 0;
     platform.x = (SCREEN_WIDTH - platform.w) / 2;
     platform.y = SCREEN_HEIGHT - platform.h - 50;
 
     ball.x = SCREEN_WIDTH / 2;
     ball.y = SCREEN_HEIGHT / 2;
-
     ball_move_x = BALL_SPEED;
     ball_move_y = -BALL_SPEED;
 
