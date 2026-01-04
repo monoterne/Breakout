@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 
 #define SCREEN_WIDTH  800
@@ -42,6 +43,8 @@ int ball_move_y = -BALL_SPEED; // ^
 SDL_Rect brick[BRICK_TOTAL];
 int brick_count = 0;
 
+TTF_Font* font = NULL;
+
 typedef enum {
     MENU,
     PLAY,
@@ -63,18 +66,55 @@ SDL_Color level_colors[LEVELS] = {
     {0, 255, 255, 255}  // lvel 3
 };
 
+void render_text(SDL_Renderer* renderer, int x, int y, const char* text, SDL_Color color, int center) {
+    if (!font) {
+        return;
+    }
+
+    SDL_Surface* surface = TTF_RenderText_Blended(
+        font,
+        text,
+        color
+    );
+    if (!surface) {
+        printf("Text Render Error: %s\n", TTF_GetError());
+        return;
+    }
+
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(
+        renderer,
+        surface
+    );
+
+    SDL_Rect text_rect = {
+        x,
+        y,
+        surface->w,
+        surface->h
+    };
+
+    if (center) {
+        text_rect.x = x-(surface->w / 2);
+        text_rect.y = y-(surface->h / 2);
+    }
+
+    SDL_RenderCopy(renderer, texture, NULL, &text_rect);
+
+    SDL_FreeSurface(surface);
+    SDL_DestroyTexture(texture);
+}
+
 void load_level(const char* file_name) {
     brick_count = 0;
     FILE* file = fopen(file_name, "r");
 
     int space_x = (SCREEN_WIDTH - (BRICK_COLS * (BRICK_WIDTH + BRICK_SPACE))) / 2;
 
-
     if (!file) {
         printf("No %s found. Generating default bricks grid\n", file_name);
         for (int i = 0; i < 30; i++) {
             int r = i / BRICK_COLS;
-            int c = i %BRICK_COLS;
+            int c = i % BRICK_COLS;
             brick[brick_count++] = (SDL_Rect) {
                 space_x + c*(BRICK_WIDTH + BRICK_SPACE),
                 SPACE_Y + r*(BRICK_HEIGHT + BRICK_SPACE),

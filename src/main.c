@@ -6,6 +6,16 @@ int main() {
         return 1;
     }
 
+    if (TTF_Init() == -1) {
+        fprintf(stderr, "TTF_Init Error: %s\n", TTF_GetError());
+        return 1;
+    }
+
+    font = TTF_OpenFont("Alegreya-Regular.ttf", 32);
+    if (!font) {
+        fprintf(stderr, "TTF_OpenFont Error: %s\n", TTF_GetError());
+    }
+
     SDL_Window* window = SDL_CreateWindow(
         "Breakout /w SDL2",
         SDL_WINDOWPOS_CENTERED,
@@ -107,7 +117,6 @@ int main() {
 
             if (ball.y >= SCREEN_HEIGHT) {
                 game_state = LOSE;
-                printf("You lose!\n");
             }
 
             if (SDL_HasIntersection(&ball, &platform)) {
@@ -156,6 +165,11 @@ int main() {
                 }
                 SDL_SetRenderDrawColor(renderer, level_colors[i].r, level_colors[i].g, level_colors[i].b, 255);
                 SDL_RenderFillRect(renderer, &btn);
+
+                char str[2];
+                sprintf(str, "Level %d", i + 1);
+                SDL_Color white = {255, 255, 255, 255};
+                render_text(renderer, btn.x + btn_size/2, btn.y + btn_size/2, str, white, 1);
             }
         }
 
@@ -193,6 +207,11 @@ int main() {
         // could try to do delta etc. (look skripta)
         //SDL_Delay(1000/60); // 60 fps
     }
+
+    if (font) {
+        TTF_CloseFont(font);
+    }
+    TTF_Quit();
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
