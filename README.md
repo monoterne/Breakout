@@ -12,11 +12,11 @@ Level maps are stored in `resources/levels/` as `.txt` files with 0s and 1s.
 
 | Level selection | Gameplay |
 | --- | --- |
-| ![Breakout menu with Level 2 selected](docs/screenshots/menu.png) | ![Ball and paddle in play with a score of 15](docs/screenshots/gameplay.png) |
+| ![Breakout menu](docs/screenshots/menu.png) | ![Ball and paddle in play](docs/screenshots/gameplay.png) |
 
 | Victory | Game over |
 | --- | --- |
-| ![You Won screen with a score of 110](docs/screenshots/victory.png) | ![Game Over screen with a score of 15](docs/screenshots/game-over.png) |
+| ![Victory](docs/screenshots/victory.png) | ![Game Over screen](docs/screenshots/game-over.png) |
 
 ## Build and run
 
