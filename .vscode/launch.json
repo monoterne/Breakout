@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Breakout",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/Breakout",
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "Build Breakout",
+            "MIMode": "gdb",
+            "osx": {
+                "MIMode": "lldb"
+            }
+        }
+    ]
+}
