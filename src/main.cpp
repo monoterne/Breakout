@@ -244,18 +244,18 @@ int main() {
 
     InitAudioDevice();
     if (IsAudioDeviceReady()) {
-        sound_select = LoadSound("SELECT.wav");
-        sound_destroy = LoadSound("DESTROY.wav");
-        sound_win = LoadSound("WIN.wav");
-        sound_lose = LoadSound("LOSE.wav");
-        sound_menu = LoadMusicStream("MENU.wav");
+        sound_select = LoadSound("resources/audio/SELECT.wav");
+        sound_destroy = LoadSound("resources/audio/DESTROY.wav");
+        sound_win = LoadSound("resources/audio/WIN.wav");
+        sound_lose = LoadSound("resources/audio/LOSE.wav");
+        sound_menu = LoadMusicStream("resources/audio/MENU.wav");
         sound_menu.looping = true;
         start_menu_music();
     }
 
-    Font font_big = LoadFontEx("PrStart.ttf", 32, NULL, 0);
-    Font font_small = LoadFontEx("PrStart.ttf", 16, NULL, 0);
-    Texture2D ball_texture = LoadTexture("ball.png");
+    Font font_big = LoadFontEx("resources/fonts/PrStart.ttf", 32, NULL, 0);
+    Font font_small = LoadFontEx("resources/fonts/PrStart.ttf", 16, NULL, 0);
+    Texture2D ball_texture = LoadTexture("resources/textures/ball.png");
     Camera2D camera = {};
     camera.zoom = (float)WINDOW_WIDTH / SCREEN_WIDTH;
 
