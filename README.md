@@ -8,6 +8,16 @@ Press **Enter** or **Space** to start or return to the menu.
 
 Level maps are stored in `resources/levels/` as `.txt` files with 0s and 1s.
 
+## Screenshots
+
+| Level selection | Gameplay |
+| --- | --- |
+| ![Breakout menu with Level 2 selected](docs/screenshots/menu.png) | ![Ball and paddle in play with a score of 15](docs/screenshots/gameplay.png) |
+
+| Victory | Game over |
+| --- | --- |
+| ![You Won screen with a score of 110](docs/screenshots/victory.png) | ![Game Over screen with a score of 15](docs/screenshots/game-over.png) |
+
 ## Build and run
 
 From the project root, build the game and launch it once the build succeeds. The script uses `pkg-config` to find raylib 5.5 or newer.
