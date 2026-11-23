@@ -10,10 +10,10 @@
 
 #define PLATFORM_WIDTH 120
 #define PLATFORM_HEIGHT 16
-#define PLATFORM_SPEED 12
+#define PLATFORM_SPEED 9
 
 #define BALL_SIZE 24
-#define BALL_SPEED 6
+#define BALL_SPEED 4.5f
 
 #define BRICK_WIDTH 70
 #define BRICK_HEIGHT 20

@@ -10,8 +10,8 @@ static const Color button_color = {15, 25, 25, 255};
 
 static Rectangle platform = {0, 0, PLATFORM_WIDTH, PLATFORM_HEIGHT};
 static Rectangle ball = {0, 0, BALL_SIZE, BALL_SIZE};
-static int ball_move_x = BALL_SPEED;  // ->
-static int ball_move_y = -BALL_SPEED; // ^
+static float ball_move_x = BALL_SPEED;  // ->
+static float ball_move_y = -BALL_SPEED; // ^
 static Rectangle brick[BRICK_TOTAL];
 static int brick_count = 0;
 static int score = 0;
