@@ -6,7 +6,7 @@ Use **A/D** or the **L/R arrows** to choose a level and move the paddle.
 
 Press **Enter** or **Space** to start or return to the menu.
 
-Maps are created using `.txt` files with 0s and 1s.
+Level maps are stored in `resources/levels/` as `.txt` files with 0s and 1s.
 
 ## Build and run
 

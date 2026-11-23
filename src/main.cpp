@@ -18,7 +18,11 @@ static int score = 0;
 
 static State game_state = MENU;
 static int choosed_level = 0;
-static const char* level_file[LEVELS] = {"level1.txt", "level2.txt", "level3.txt"};
+static const char* level_file[LEVELS] = {
+    "resources/levels/level1.txt",
+    "resources/levels/level2.txt",
+    "resources/levels/level3.txt"
+};
 
 static Sound sound_select, sound_destroy, sound_win, sound_lose;
 static Music sound_menu;
