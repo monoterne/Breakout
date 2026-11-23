@@ -209,15 +209,18 @@ static void draw_menu(Font font_big, Font font_small) {
     render_text(font_small, 16, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 220, "ENTER to choose the level", white);
 }
 
-static void draw_play(Texture2D ball_texture, Font font_small) {
-    DrawRectangleRec(platform, light_green);
-    if (IsTextureValid(ball_texture)) {
-        Rectangle src = {0, 0, (float)ball_texture.width, (float)ball_texture.height};
-        Vector2 origin = {0, 0};
-        DrawTexturePro(ball_texture, src, ball, origin, 0, white);
+static void draw_sprite(Texture2D texture, Rectangle bounds, Color fallback) {
+    if (IsTextureValid(texture)) {
+        Rectangle src = {0, 0, (float)texture.width, (float)texture.height};
+        DrawTexturePro(texture, src, bounds, {0, 0}, 0, white);
     } else {
-        DrawRectangleRec(ball, white);
+        DrawRectangleRec(bounds, fallback);
     }
+}
+
+static void draw_play(Texture2D ball_texture, Texture2D paddle_texture, Font font_small) {
+    draw_sprite(paddle_texture, platform, light_green);
+    draw_sprite(ball_texture, ball, white);
     for (int i = 0; i < brick_count; i++) {
         if (brick[i].width > 0) {
             DrawRectangleRec(brick[i], beige);
@@ -260,6 +263,8 @@ int main() {
     Font font_big = LoadFontEx("resources/fonts/PrStart.ttf", 32, NULL, 0);
     Font font_small = LoadFontEx("resources/fonts/PrStart.ttf", 16, NULL, 0);
     Texture2D ball_texture = LoadTexture("resources/textures/ball.png");
+    Texture2D paddle_texture = LoadTexture("resources/textures/paddle.png");
+    Texture2D background_texture = LoadTexture("resources/textures/background.png");
     Camera2D camera = {};
     camera.zoom = (float)WINDOW_WIDTH / SCREEN_WIDTH;
 
@@ -279,10 +284,11 @@ int main() {
         BeginDrawing();
         ClearBackground(dark_green);
         BeginMode2D(camera);
+        draw_sprite(background_texture, {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}, dark_green);
         if (game_state == MENU) {
             draw_menu(font_big, font_small);
         } else if (game_state == PLAY) {
-            draw_play(ball_texture, font_small);
+            draw_play(ball_texture, paddle_texture, font_small);
         } else {
             draw_result(font_big, font_small);
         }
@@ -294,6 +300,12 @@ int main() {
     UnloadFont(font_small);
     if (IsTextureValid(ball_texture)) {
         UnloadTexture(ball_texture);
+    }
+    if (IsTextureValid(paddle_texture)) {
+        UnloadTexture(paddle_texture);
+    }
+    if (IsTextureValid(background_texture)) {
+        UnloadTexture(background_texture);
     }
     if (IsAudioDeviceReady()) {
         if (IsSoundValid(sound_select)) UnloadSound(sound_select);
