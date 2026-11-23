@@ -14,6 +14,7 @@ static float ball_move_x = BALL_SPEED;  // ->
 static float ball_move_y = -BALL_SPEED; // ^
 static Rectangle brick[BRICK_TOTAL];
 static int brick_count = 0;
+static int bricks_remaining = 0;
 static int score = 0;
 
 static State game_state = MENU;
@@ -94,6 +95,7 @@ static void reset() {
     ball_move_y = -BALL_SPEED;
 
     load_level(level_file[choosed_level]);
+    bricks_remaining = brick_count;
 }
 
 static void handle_key(int key) {
@@ -159,22 +161,17 @@ static void update_play(bool move_left, bool move_right) {
         ball.y = platform.y - ball.height;
     }
 
-    // The original win check counts only the bricks visited before the first hit.
-    int brick_active = 0;
     for (int i = 0; i < brick_count; i++) {
-        if (brick[i].width > 0) {
-            brick_active++;
-            if (CheckCollisionRecs(ball, brick[i])) {
-                play_sound(sound_destroy);
-                brick[i].width = 0; // destroy brick by setting width to 0
-                ball_move_y = -ball_move_y;
-                score += 5;
-                brick_active--;
-                break; // to not destroy several bricks in one hit
-            }
+        if (brick[i].width > 0 && CheckCollisionRecs(ball, brick[i])) {
+            play_sound(sound_destroy);
+            brick[i].width = 0; // destroy brick by setting width to 0
+            ball_move_y = -ball_move_y;
+            score += 5;
+            --bricks_remaining;
+            break; // to not destroy several bricks in one hit
         }
     }
-    if (brick_active == 0) {
+    if (bricks_remaining == 0) {
         play_sound(sound_win);
         game_state = WIN;
     }
